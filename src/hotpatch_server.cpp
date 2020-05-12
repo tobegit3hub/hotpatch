@@ -15,6 +15,8 @@
 
 #include "hotpatch_server.h"
 
+namespace hotpatch {
+
 HotpatchServer::HotpatchServer() {
 
 }
@@ -106,3 +108,5 @@ void HotpatchServer::close() {
     socket_server_thread.join();
 
 }
+
+} // End of namespace

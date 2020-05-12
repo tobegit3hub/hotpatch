@@ -1,6 +1,8 @@
 #ifndef _H_HOTPATCH_SERVER
 #define _H_HOTPATCH_SERVER
 
+namespace hotpatch {
+
 class HotpatchServer {
 
 private:
@@ -17,5 +19,7 @@ public:
     void close();
 
 };
+
+} // End of namespace
 
 #endif
