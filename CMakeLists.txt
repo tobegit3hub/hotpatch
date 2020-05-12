@@ -5,3 +5,4 @@ project(hotpatch)
 add_compile_options(-std=c++14)
 
 add_subdirectory("src")
+add_subdirectory("examples")

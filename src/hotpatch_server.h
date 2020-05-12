@@ -24,6 +24,7 @@ public:
 
     void register_variable(std::string key, void *p_value);
 
+
 };
 
 } // End of namespace
