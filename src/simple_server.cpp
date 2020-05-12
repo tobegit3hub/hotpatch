@@ -22,6 +22,10 @@ int main(int argc, char **argv) {
 
     hp->init();
 
+    string user_name = "test_name";
+
+    hp->register_variable("user_name", &user_name);
+
 
     for(int i=0; i<10; i++) {
         cout << "Sleep for one second" << endl;
@@ -29,6 +33,8 @@ int main(int argc, char **argv) {
 
         cout << "Config debug: " << FLAGS_debug << endl;
         cout << "Config log_level: " << FLAGS_log_level << endl;
+
+        cout << "User name: " << user_name << endl;
     }
 
 

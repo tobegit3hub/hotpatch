@@ -12,6 +12,8 @@
 #include <sys/types.h>
 #include <iostream>
 #include <thread>
+#include <gflags/gflags.h>
+#include <string>
 
 #include "hotpatch_server.h"
 
@@ -87,6 +89,12 @@ void start_socket_server() {
             // Handle command
             std::cout << "Receive command: " + std::string(read_buf) << std::endl;
  
+            // TODO: Parse user command to set key-value
+            auto result = gflags::SetCommandLineOption("log_level", "test_log_level");
+            std::cout << "Set gflags result: " << result << std::endl;
+
+            // TODO: Get registered variables to set
+
             // Output result
             std::string sendResult = "Success to run";
             std::cout << sendResult << std::endl;
@@ -107,6 +115,14 @@ void HotpatchServer::close() {
 
     socket_server_thread.join();
 
+}
+
+void HotpatchServer::register_variable(std::string key, void *p_value) {
+    // TODO: Make share to release smart pointers
+    registered_variables[key] = p_value;
+
+    // TODO: Test to set registered variable
+    registered_variables["user_name"] = new std::string("new_name");
 }
 
 } // End of namespace
