@@ -14,6 +14,9 @@
 #include <thread>
 #include <gflags/gflags.h>
 #include <string>
+#include <dlfcn.h>
+#include <memory>
+#include <cassert>
 
 #include "hotpatch_server.h"
 
@@ -109,9 +112,18 @@ void HotpatchServer::init() {
 
     socket_server_thread = std::thread(start_socket_server);
 
+    const std::string lib_name = "../examples/libnew_add_func.dylib";
+
+    dl_handler = dlopen(lib_name.c_str(), RTLD_LAZY);
+    if (!dl_handler) {
+        std::cerr << "Cannot open library: " << dlerror() << '\n';
+    }
+
 }
 
 void HotpatchServer::close() {
+
+    dlclose(dl_handler);
 
     socket_server_thread.join();
 
@@ -124,5 +136,13 @@ void HotpatchServer::register_variable(std::string key, void *p_value) {
     // TODO: Test to set registered variable
     registered_variables["user_name"] = new std::string("new_name");
 }
+
+
+void* HotpatchServer::register_function(std::string func_name, void* p_function) {
+    // TODO: Change function pointer with new implementation
+    //return dlsym(dl_handler, func_name.c_str());
+    return p_function;
+}
+
 
 } // End of namespace

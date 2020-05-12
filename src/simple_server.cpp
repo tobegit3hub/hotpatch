@@ -2,9 +2,7 @@
 #include <chrono>
 #include <thread>
 #include <gflags/gflags.h>
-#include <dlfcn.h>
-#include <memory>
-#include <cassert>
+
 
 #include "hotpatch_server.h"
 
@@ -34,24 +32,13 @@ int main(int argc, char **argv) {
 
     hp->init();
 
+    // Register variable
     string user_name = "test_name";
-
     hp->register_variable("user_name", &user_name);
 
-    int(*p_simple_add)(int, int) = simple_add;
-
-    const string lib_name = "../examples/libnew_add_func.dylib";
+    // Register function
     const string func_name = "new_add_func";
-
-    void* handle = dlopen(lib_name.c_str(), RTLD_LAZY);
-    if (!handle) {
-        cerr << "Cannot open library: " << dlerror() << '\n';
-    }
-
-    function_type new_add_func = (function_type) dlsym(handle, func_name.c_str());
-    
-    // TODO: Register and replace dynamically
-    p_simple_add = new_add_func;
+    function_type p_simple_add = (function_type) hp->register_function(func_name, reinterpret_cast<void*>(simple_add));
 
     for(int i=0; i<10; i++) {
         cout << "Sleep for one second" << endl;
@@ -68,7 +55,6 @@ int main(int argc, char **argv) {
 
     hp->close();
 
-    dlclose(handle);
 
     cout << "End of main" << endl;
 

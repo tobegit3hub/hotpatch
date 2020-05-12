@@ -13,6 +13,8 @@ private:
     bool should_stop = false;
     std::map<std::string, void*> registered_variables;
 
+    // TODO: Support multiple handers for more libraries
+    void* dl_handler;
 public:
     HotpatchServer();
 
@@ -24,6 +26,8 @@ public:
 
     void register_variable(std::string key, void *p_value);
 
+
+    void* register_function(std::string func_name, void* p_function);
 
 };
 
