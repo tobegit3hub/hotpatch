@@ -6,6 +6,8 @@
 
 namespace hotpatch {
 
+typedef void (*void_function_type)();
+
 class HotpatchServer {
 
 private:
@@ -28,6 +30,8 @@ public:
 
 
     void* register_function(std::string func_name, void* p_function);
+
+
 
 };
 

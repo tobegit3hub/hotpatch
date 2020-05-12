@@ -3,7 +3,7 @@
 
 using namespace std;
 
-extern "C" int new_add_func(int a, int b) {
+extern "C" int add_func(int a, int b) {
 
     cout << "Call new add func" << endl;
     int result = (a + b) * 2;

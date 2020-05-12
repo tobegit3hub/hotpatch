@@ -1,1 +1,2 @@
-add_library(new_add_func SHARED new_add_func.cpp)
+
+add_library(add_func_patch1 SHARED add_func.cpp before_add_func.cpp after_add_func.cpp)

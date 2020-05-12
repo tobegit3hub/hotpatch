@@ -112,7 +112,7 @@ void HotpatchServer::init() {
 
     socket_server_thread = std::thread(start_socket_server);
 
-    const std::string lib_name = "../examples/libnew_add_func.dylib";
+    const std::string lib_name = "../examples/libadd_func_patch1.dylib";
 
     dl_handler = dlopen(lib_name.c_str(), RTLD_LAZY);
     if (!dl_handler) {
@@ -123,7 +123,9 @@ void HotpatchServer::init() {
 
 void HotpatchServer::close() {
 
-    dlclose(dl_handler);
+    if (dl_handler != NULL) {
+        dlclose(dl_handler);
+    }
 
     socket_server_thread.join();
 
@@ -139,9 +141,22 @@ void HotpatchServer::register_variable(std::string key, void *p_value) {
 
 
 void* HotpatchServer::register_function(std::string func_name, void* p_function) {
-    // TODO: Change function pointer with new implementation
-    //return dlsym(dl_handler, func_name.c_str());
-    return p_function;
+
+    if (dl_handler != NULL) {
+
+        /* TODO: Support if we return the wrapper of multiple functions
+        auto before_func = dlsym(dl_handler, ("before_" + func_name).c_str());
+        if (before_func != NULL) {
+            ((void_function_type)before_func)();
+        }
+        */
+
+        // TODO: Change function pointer with new implementation if needed
+        return dlsym(dl_handler, func_name.c_str());
+    } else {
+        return p_function;
+    }
+
 }
 
 
