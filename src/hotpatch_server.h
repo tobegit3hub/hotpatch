@@ -4,6 +4,8 @@
 class HotpatchServer {
 
 private:
+    std::thread socket_server_thread;
+    bool should_stop = false;
 
 public:
     HotpatchServer();
