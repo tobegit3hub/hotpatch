@@ -27,7 +27,7 @@ int main(int argc, char **argv) {
     FLAGS_logtostderr = 1;
     google::InitGoogleLogging(argv[0]); 
 
-    LOG(INFO) << "glog info message";
+    FLAGS_minloglevel = 2;
 
     auto hp = make_shared<hotpatch::HotpatchServer>();
     hp->Init();
@@ -49,6 +49,10 @@ int main(int argc, char **argv) {
         cout << "User name: " << user_name << endl;
 
         p_add_func(1, 2);
+
+        LOG(INFO) << "glog debug message";
+        LOG(WARNING) << "glog warning message";
+        LOG(ERROR) << "glog erro message";
     }
 
     hp->Close();
