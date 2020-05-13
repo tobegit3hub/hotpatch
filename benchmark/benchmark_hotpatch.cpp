@@ -30,6 +30,14 @@ int main(int argc, char **argv) {
     auto hp = make_shared<hotpatch::HotpatchServer>();
     hp->init();
 
+    /*
+        Native call time: 2.17616
+        Use native function point time: 2.35947
+        Cast native function time: 2.36825
+        Mock register native function time: 2.36832
+        Hotpatch call native time: 2.44159
+    */
+
     // Test native C++ function
     timestamp_t start = get_timestamp();
     const int BENCHMARK_ITERATION = 1000000000;

@@ -18,6 +18,7 @@ private:
 
     // TODO: Support multiple handers for more libraries
     void* dl_handler;
+
 public:
     HotpatchServer();
 
@@ -29,11 +30,11 @@ public:
 
     void register_variable(std::string key, void *p_value);
 
-
     void* register_function(std::string func_name, void* p_function);
+    
+    bool GetShouldStop();
 
-
-
+    void SetShouldStop(bool stop);
 };
 
 } // End of namespace

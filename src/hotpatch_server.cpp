@@ -30,7 +30,7 @@ HotpatchServer::~HotpatchServer() {
 
 }
 
-void start_socket_server() {
+void start_socket_server(HotpatchServer* p_hotpatch_server) {
 
     const int buffer_size = 128;
     const int client_size = 8;
@@ -71,7 +71,8 @@ void start_socket_server() {
     socklen_t cliun_len = sizeof(cliun);
     char read_buf[buffer_size], write_buf[buffer_size];
     int connfd;
-    while(1) {
+    while(p_hotpatch_server->GetShouldStop() == false) {
+        // TODO: Use async API to close the socket
         // Accept socket client
         if ((connfd = accept(listenfd, (struct sockaddr *)&cliun, &cliun_len)) < 0){
             perror("accept error");
@@ -110,7 +111,7 @@ void start_socket_server() {
 
 void HotpatchServer::init() {
 
-    socket_server_thread = std::thread(start_socket_server);
+    socket_server_thread = std::thread(&start_socket_server, this);
 
     const std::string lib_name = "../examples/libadd_func_patch1.dylib";
 
@@ -127,6 +128,8 @@ void HotpatchServer::close() {
         dlclose(dl_handler);
     }
 
+    SetShouldStop(true);
+
     socket_server_thread.join();
 
 }
@@ -142,6 +145,8 @@ void HotpatchServer::register_variable(std::string key, void *p_value) {
 
 void* HotpatchServer::register_function(std::string func_name, void* p_function) {
     return p_function;
+    //return dlsym(dl_handler, func_name.c_str());
+
     /*
     if (dl_handler != NULL) {
         // TODO: Change function pointer with new implementation if needed
@@ -151,6 +156,14 @@ void* HotpatchServer::register_function(std::string func_name, void* p_function)
     }
     */
 
+}
+
+bool HotpatchServer::GetShouldStop() {
+    return should_stop;
+}
+
+void HotpatchServer::SetShouldStop(bool stop) {
+    should_stop = stop;
 }
 
 
