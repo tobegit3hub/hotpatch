@@ -30,6 +30,7 @@ int main(int argc, char **argv) {
 
     hp->init();
 
+    // TODO: Provide static method to register variables
     // Register variable
     string user_name = "test_name";
     hp->register_variable("user_name", &user_name);

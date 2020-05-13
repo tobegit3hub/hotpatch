@@ -141,21 +141,15 @@ void HotpatchServer::register_variable(std::string key, void *p_value) {
 
 
 void* HotpatchServer::register_function(std::string func_name, void* p_function) {
-
+    return p_function;
+    /*
     if (dl_handler != NULL) {
-
-        /* TODO: Support if we return the wrapper of multiple functions
-        auto before_func = dlsym(dl_handler, ("before_" + func_name).c_str());
-        if (before_func != NULL) {
-            ((void_function_type)before_func)();
-        }
-        */
-
         // TODO: Change function pointer with new implementation if needed
         return dlsym(dl_handler, func_name.c_str());
     } else {
         return p_function;
     }
+    */
 
 }
 
