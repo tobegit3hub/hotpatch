@@ -8,11 +8,11 @@
 using namespace std;
 
 
+// Use gflags
 DEFINE_bool(debug, true, "Use debug or not");
 DEFINE_string(log_level, "debug,info,warn", "The log level");
 
-typedef int (*function_type)(int, int);
-
+// Define local function
 int add_func(int a, int b) {
     cout << "Call simple add" << endl;
     int result = a + b;
@@ -36,7 +36,7 @@ int main(int argc, char **argv) {
     hp->RegisterVariable("user_name", &user_name);
 
     // Register function
-    function_type p_add_func = (function_type) hp->RegisterFunction("add_func", reinterpret_cast<void*>(add_func));
+    decltype(add_func)* p_add_func = (decltype(add_func)*) hp->RegisterFunction("add_func", reinterpret_cast<void*>(add_func));
 
     for(int i=0; i<10; i++) {
         cout << "Sleep for one second" << endl;
