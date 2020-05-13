@@ -16,7 +16,7 @@ private:
     bool should_stop = false;
     std::map<std::string, void*> registered_variables;
 
-    // TODO: Support multiple handers for more libraries
+    // TODO: Support multiple handlers for more libraries
     void* dl_handler;
 
 public:
@@ -31,13 +31,11 @@ public:
     void RegisterVariable(std::string key, void *p_value);
 
     void* RegisterFunction(std::string func_name, void* p_function);
-    
-    
 
-    
     bool GetShouldStop();
 
     void SetShouldStop(bool stop);
+
 };
 
 } // End of namespace

@@ -3,10 +3,31 @@
 #include <thread>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
-
+#include <dlfcn.h>
+#include <memory>
+#include <cassert>
 #include "hotpatch_server.h"
+#include<cstdlib>
 
 using namespace std;
+
+
+template<typename Fn, Fn fn, typename... Args>
+typename std::result_of<Fn(Args...)>::type wrapper(Args&&... args) {
+
+    /*
+    const std::string lib_name = "../examples/libadd_func_patch1.dylib";
+    void* dl_handler = dlopen(lib_name.c_str(), RTLD_LAZY);
+
+    std::string func_name = "add_func";
+    auto new_fun = (decltype(fn)) dlsym(dl_handler, func_name.c_str());
+
+    return new_fun(std::forward<Args>(args)...);
+    */
+    return fn(std::forward<Args>(args)...);
+}
+
+#define WRAPPER(FUNC) wrapper<decltype(&FUNC), &FUNC>
 
 
 // Use gflags
@@ -24,6 +45,7 @@ int add_func(int a, int b) {
 int main(int argc, char **argv) {
 
     gflags::ParseCommandLineFlags(&argc, &argv, true);
+    // Use glog
     FLAGS_logtostderr = 1;
     google::InitGoogleLogging(argv[0]); 
 
@@ -37,7 +59,7 @@ int main(int argc, char **argv) {
     string user_name = "myname";
     hp->RegisterVariable("user_name", &user_name);
 
-    auto p_add_func = (decltype(add_func)*) hp->RegisterFunction("add_func", reinterpret_cast<void*>(add_func));
+   //auto p_add_func = (decltype(add_func)*) hp->RegisterFunction("add_func", reinterpret_cast<void*>(add_func));
 
     for(int i=0; i<10; i++) {
         cout << "Sleep for one second" << endl;
@@ -48,7 +70,12 @@ int main(int argc, char **argv) {
 
         cout << "User name: " << user_name << endl;
 
-        p_add_func(1, 2);
+        //p_add_func(1, 2);
+
+        auto result = WRAPPER(add_func)(10, 20);
+        //auto result = wrapper<decltype(&add_func), &add_func>(add_func)(10, 20);
+        cout << "Wrapper function result: " << result << endl;
+
 
         LOG(INFO) << "glog debug message";
         LOG(WARNING) << "glog warning message";

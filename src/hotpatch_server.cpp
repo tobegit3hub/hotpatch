@@ -170,5 +170,4 @@ void HotpatchServer::SetShouldStop(bool stop) {
     should_stop = stop;
 }
 
-
 } // End of namespace
