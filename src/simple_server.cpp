@@ -32,12 +32,11 @@ int main(int argc, char **argv) {
 
     // TODO: Provide static method to register variables
     // Register variable
-    string user_name = "test_name";
+    string user_name = "myname";
     hp->register_variable("user_name", &user_name);
 
     // Register function
-    const string func_name = "add_func";
-    function_type p_add_func = (function_type) hp->register_function(func_name, reinterpret_cast<void*>(add_func));
+    function_type p_add_func = (function_type) hp->register_function("add_func", reinterpret_cast<void*>(add_func));
 
     for(int i=0; i<10; i++) {
         cout << "Sleep for one second" << endl;
@@ -51,9 +50,7 @@ int main(int argc, char **argv) {
         p_add_func(1, 2);
     }
 
-
     hp->close();
-
 
     cout << "End of main" << endl;
 

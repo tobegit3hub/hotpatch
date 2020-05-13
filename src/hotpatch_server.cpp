@@ -130,7 +130,9 @@ void HotpatchServer::close() {
 
     SetShouldStop(true);
 
-    socket_server_thread.join();
+
+    socket_server_thread.detach();
+    //socket_server_thread.join();
 
 }
 
