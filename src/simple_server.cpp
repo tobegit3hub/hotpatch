@@ -2,6 +2,7 @@
 #include <chrono>
 #include <thread>
 #include <gflags/gflags.h>
+#include <glog/logging.h>
 
 #include "hotpatch_server.h"
 
@@ -23,11 +24,12 @@ int add_func(int a, int b) {
 int main(int argc, char **argv) {
 
     gflags::ParseCommandLineFlags(&argc, &argv, true);
+    FLAGS_logtostderr = 1;
+    google::InitGoogleLogging(argv[0]); 
 
-    cout << "Start main" << endl;
+    LOG(INFO) << "glog info message";
 
     auto hp = make_shared<hotpatch::HotpatchServer>();
-
     hp->Init();
 
     // TODO: Provide static method to register variables
@@ -35,8 +37,7 @@ int main(int argc, char **argv) {
     string user_name = "myname";
     hp->RegisterVariable("user_name", &user_name);
 
-    // Register function
-    decltype(add_func)* p_add_func = (decltype(add_func)*) hp->RegisterFunction("add_func", reinterpret_cast<void*>(add_func));
+    auto p_add_func = (decltype(add_func)*) hp->RegisterFunction("add_func", reinterpret_cast<void*>(add_func));
 
     for(int i=0; i<10; i++) {
         cout << "Sleep for one second" << endl;
@@ -51,8 +52,6 @@ int main(int argc, char **argv) {
     }
 
     hp->Close();
-
-    cout << "End of main" << endl;
 
 }
 

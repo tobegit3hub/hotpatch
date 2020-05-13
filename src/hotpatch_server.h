@@ -32,6 +32,9 @@ public:
 
     void* RegisterFunction(std::string func_name, void* p_function);
     
+    
+
+    
     bool GetShouldStop();
 
     void SetShouldStop(bool stop);

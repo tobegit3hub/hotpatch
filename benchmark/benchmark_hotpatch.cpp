@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
     cout << "Native call time: " << secs << endl;
 
     // Test using function pointer
-    add_one_type p_add_one = add_one;
+    auto p_add_one = add_one;
     start = get_timestamp();
     for (int i=0; i<BENCHMARK_ITERATION; ++i) {
         p_add_one(1);
@@ -80,10 +80,13 @@ int main(int argc, char **argv) {
     secs = (end - start) / 1000000.0L;
     cout << "Mock register native function time: " << secs << endl;
 
-
     // Test register native function before calling
-    const string func_name = "add_one";
-    p_add_one = (add_one_type) hp->RegisterFunction(func_name, reinterpret_cast<void*>(add_one));
+    //p_add_one = (add_one_type) hp->RegisterFunction(func_name, reinterpret_cast<void*>(add_one));
+    p_add_one = &add_one;
+
+    hp->RegisterFunction("add_one", reinterpret_cast<void*>(p_add_one));
+    //auto p_add_one = hp->RegisterFunction<decltype(add_one)*>("add_one", add_one);
+
     start = get_timestamp();
     for (int i=0; i<BENCHMARK_ITERATION; ++i) {
         p_add_one(1);
