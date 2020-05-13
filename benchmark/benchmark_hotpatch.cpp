@@ -28,7 +28,7 @@ void* mock_register_function(std::string func_name, void* p_function){
 int main(int argc, char **argv) {
 
     auto hp = make_shared<hotpatch::HotpatchServer>();
-    hp->init();
+    hp->Init();
 
     /*
         Native call time: 2.17616
@@ -83,7 +83,7 @@ int main(int argc, char **argv) {
 
     // Test register native function before calling
     const string func_name = "add_one";
-    p_add_one = (add_one_type) hp->register_function(func_name, reinterpret_cast<void*>(add_one));
+    p_add_one = (add_one_type) hp->RegisterFunction(func_name, reinterpret_cast<void*>(add_one));
     start = get_timestamp();
     for (int i=0; i<BENCHMARK_ITERATION; ++i) {
         p_add_one(1);
@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
     cout << "Hotpatch call native time: " << secs << endl;
 
 
-    hp->close();
+    hp->Close();
 
     return 0;
 }

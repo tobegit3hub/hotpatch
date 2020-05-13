@@ -24,13 +24,13 @@ public:
 
     ~HotpatchServer();
 
-    void init();
+    void Init();
 
-    void close();
+    void Close();
 
-    void register_variable(std::string key, void *p_value);
+    void RegisterVariable(std::string key, void *p_value);
 
-    void* register_function(std::string func_name, void* p_function);
+    void* RegisterFunction(std::string func_name, void* p_function);
     
     bool GetShouldStop();
 

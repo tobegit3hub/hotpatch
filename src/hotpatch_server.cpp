@@ -109,7 +109,7 @@ void start_socket_server(HotpatchServer* p_hotpatch_server) {
     close(listenfd);
 }
 
-void HotpatchServer::init() {
+void HotpatchServer::Init() {
 
     socket_server_thread = std::thread(&start_socket_server, this);
 
@@ -122,7 +122,7 @@ void HotpatchServer::init() {
 
 }
 
-void HotpatchServer::close() {
+void HotpatchServer::Close() {
 
     if (dl_handler != NULL) {
         dlclose(dl_handler);
@@ -136,7 +136,7 @@ void HotpatchServer::close() {
 
 }
 
-void HotpatchServer::register_variable(std::string key, void *p_value) {
+void HotpatchServer::RegisterVariable(std::string key, void *p_value) {
     // TODO: Make share to release smart pointers
     registered_variables[key] = p_value;
 
@@ -145,7 +145,7 @@ void HotpatchServer::register_variable(std::string key, void *p_value) {
 }
 
 
-void* HotpatchServer::register_function(std::string func_name, void* p_function) {
+void* HotpatchServer::RegisterFunction(std::string func_name, void* p_function) {
     return p_function;
     //return dlsym(dl_handler, func_name.c_str());
 

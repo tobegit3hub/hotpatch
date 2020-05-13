@@ -28,15 +28,15 @@ int main(int argc, char **argv) {
 
     auto hp = make_shared<hotpatch::HotpatchServer>();
 
-    hp->init();
+    hp->Init();
 
     // TODO: Provide static method to register variables
     // Register variable
     string user_name = "myname";
-    hp->register_variable("user_name", &user_name);
+    hp->RegisterVariable("user_name", &user_name);
 
     // Register function
-    function_type p_add_func = (function_type) hp->register_function("add_func", reinterpret_cast<void*>(add_func));
+    function_type p_add_func = (function_type) hp->RegisterFunction("add_func", reinterpret_cast<void*>(add_func));
 
     for(int i=0; i<10; i++) {
         cout << "Sleep for one second" << endl;
@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
         p_add_func(1, 2);
     }
 
-    hp->close();
+    hp->Close();
 
     cout << "End of main" << endl;
 
