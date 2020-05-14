@@ -27,8 +27,7 @@ void HotpatchCommand::ParseCommand(std::string command) {
 
     cout << "Parse input command: " << command << endl;
 
-    
-    //std::string s = "split on    whitespace   ";
+    // Split string with space to vector
     std::vector<std::string> split_keys;
     std::istringstream iss(command);
     for(std::string s; iss >> s; ) {
