@@ -125,10 +125,10 @@ bool HotpatchCommand::HandleVarGet(string type, string key) {
     // TODO: Support most primitive types
     if (type.compare("string") == 0) {
         LOG(INFO) << *reinterpret_cast<std::string*>(_registered_variables[key]);
-    } else if (type.compare("double") == 0) {
-        //LOG(INFO) << *reinterpret_cast<std::double*>(_registered_variables[key]);
     } else if (type.compare("int") == 0) {
-        //LOG(INFO) << *reinterpret_cast<std::int*>(_registered_variables[key]);
+        LOG(INFO) << *reinterpret_cast<int*>(_registered_variables[key]);
+    } else if (type.compare("double") == 0) {
+        LOG(INFO) << *reinterpret_cast<double*>(_registered_variables[key]);
     } 
 
     return true;
@@ -139,10 +139,12 @@ bool HotpatchCommand::HandleVarSet(string type, string key, string value) {
     if (type.compare("string") == 0) {
         std::string &v = *reinterpret_cast<std::string*>(_registered_variables[key]);
         v = value;
-    } else if (type.compare("double") == 0) {
-
     } else if (type.compare("int") == 0) {
-
+        int &v = *reinterpret_cast<int*>(_registered_variables[key]);
+        v = std::stoi(value);
+    } else if (type.compare("doble") == 0) {
+        double &v = *reinterpret_cast<double*>(_registered_variables[key]);
+        v = std::stod(value);
     } 
 
     return true;
