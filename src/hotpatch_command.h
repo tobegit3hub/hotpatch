@@ -32,6 +32,7 @@ public:
     bool HandleVarSet(string type, string key, string value);
     bool HandleLibList();
     bool HandleLibLoad(string name, string path);
+    bool HandleLibUnload(string name);
     bool HandleFuncLoad(string lib, string name);
 
 };

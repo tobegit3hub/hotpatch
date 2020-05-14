@@ -66,6 +66,8 @@ bool HotpatchCommand::HandleCommand(std::vector<std::string> command) {
             return HandleLibList();
         } else if (method.compare("load") == 0) {
             return HandleLibLoad(command[2], command[3]);
+        } else if (method.compare("unload") == 0) {
+            return HandleLibUnload(command[2]);
         }
     } else if (type.compare("func") == 0) { 
         if (method.compare("load") == 0) {
@@ -162,13 +164,25 @@ bool HotpatchCommand::HandleLibList() {
 }
 
 bool HotpatchCommand::HandleLibLoad(string name, string path) {
-    LOG(INFO) << "Try to loaddynamic library: " << name << ", path: " << path;
+    LOG(INFO) << "Try to load dynamic library: " << name << ", path: " << path;
 
     _registered_dl_handlers[name] = dlopen(path.c_str(), RTLD_LAZY);
     if (!_registered_dl_handlers[name] ) {
         std::cerr << "Cannot open library: " << dlerror() << '\n';
         return false;
     }
+
+    return true;
+}
+
+bool HotpatchCommand::HandleLibUnload(string name) {
+    LOG(INFO) << "Try to unload dynamic library: " << name;
+
+    if (_registered_dl_handlers[name] != NULL) {
+        dlclose(_registered_dl_handlers[name]);
+    }
+
+    _registered_dl_handlers.erase(name);
 
     return true;
 }
