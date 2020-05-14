@@ -25,6 +25,32 @@ using google::INFO;
 
 namespace hotpatch {
 
+
+HotpatchServer* global_hotpatch_server_ = NULL;
+
+HotpatchServer* GetGlobalHotpatchServer() {
+  // TODO: Use lock to avoid conflict
+  if (!global_hotpatch_server_) {
+    global_hotpatch_server_ = new HotpatchServer;
+  }
+  return global_hotpatch_server_;
+}
+
+void InitGlobalHotpatchServer() {
+  GetGlobalHotpatchServer()->Init();
+} 
+
+void ShutdownGlobalHotpatchServer() {
+    delete global_hotpatch_server_;
+    global_hotpatch_server_ = NULL;
+}
+
+void RegisterVariable(std::string key, void *p_value) {
+    auto hp = GetGlobalHotpatchServer();
+    hp->RegisterVariable(key, p_value);
+}
+
+
 HotpatchServer::HotpatchServer() {
     hotpatch_command = std::make_shared<HotpatchCommand>(registered_variables, registered_libraries, registered_dl_handlers);
 }
@@ -110,9 +136,7 @@ void start_socket_server(HotpatchServer* p_hotpatch_server) {
 }
 
 void HotpatchServer::Init() {
-
     socket_server_thread = std::thread(&start_socket_server, this);
-
 }
 
 void HotpatchServer::Close() {

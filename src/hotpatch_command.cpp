@@ -155,6 +155,7 @@ bool HotpatchCommand::HandleVarSet(string type, string key, string value) {
 bool HotpatchCommand::HandleLibList() {
     LOG(INFO) << "Try to list all dynamic libraries";
 
+    // List all the registered libraries which are recorded in memory
     for(std::map<std::string, void*>::iterator it = _registered_dl_handlers.begin(); it != _registered_dl_handlers.end(); ++it) {
         LOG(INFO) << "Get library: " << it->first << ", pointer: " << it->second;
     }
@@ -165,6 +166,7 @@ bool HotpatchCommand::HandleLibList() {
 bool HotpatchCommand::HandleLibLoad(string name, string path) {
     LOG(INFO) << "Try to load dynamic library: " << name << ", path: " << path;
 
+    // Load the dynamic library and register in memory
     _registered_dl_handlers[name] = dlopen(path.c_str(), RTLD_LAZY);
     if (!_registered_dl_handlers[name] ) {
         std::cerr << "Cannot open library: " << dlerror() << '\n';
@@ -177,10 +179,12 @@ bool HotpatchCommand::HandleLibLoad(string name, string path) {
 bool HotpatchCommand::HandleLibUnload(string name) {
     LOG(INFO) << "Try to unload dynamic library: " << name;
 
+    // Close the dl handler
     if (_registered_dl_handlers[name] != NULL) {
         dlclose(_registered_dl_handlers[name]);
     }
 
+    // Remove the key in map
     _registered_dl_handlers.erase(name);
 
     return true;

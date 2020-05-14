@@ -12,6 +12,11 @@ using namespace std;
 namespace hotpatch {
 
 
+extern void InitGlobalHotpatchServer();
+extern void ShutdownGlobalHotpatchServer();
+extern void RegisterVariable(std::string key, void *p_value);
+
+
 class HotpatchServer {
 
 private:

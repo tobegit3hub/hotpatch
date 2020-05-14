@@ -27,7 +27,6 @@ typename std::result_of<Fn(Args...)>::type wrapper(Args&&... args) {
     return fn(std::forward<Args>(args)...);
 }
 
-
 // Use gflags
 DEFINE_bool(debug, true, "Use debug or not");
 DEFINE_string(log_level, "debug,info,warn", "The log level");
@@ -50,16 +49,14 @@ int main(int argc, char **argv) {
     FLAGS_minloglevel = 0;
 
     // Use Hotpatch
-    auto hp = make_shared<hotpatch::HotpatchServer>();
-    hp->Init();
+    hotpatch::InitGlobalHotpatchServer();
 
-    // TODO: Provide static method to register variables
     // Register variable
     std::string user_name = "myname";
-    hp->RegisterVariable("user_name", &user_name);    
+    hotpatch::RegisterVariable("user_name", &user_name);
+
     int age = 10;
-    hp->RegisterVariable("age", &age);
-    hp->RegisterVariable("hotpatch_smart_pointer", &hp);
+    hotpatch::RegisterVariable("age", &age);
 
     //auto p_add_func = (decltype(add_func)*) hp->RegisterFunction("add_func", reinterpret_cast<void*>(add_func));
 
@@ -78,6 +75,7 @@ int main(int argc, char **argv) {
 
         //p_add_func(1, 2);
         auto result = wrapper<decltype(&add_func), &add_func>(10, 20);
+
         cout << "Wrapper function result: " << result << endl;
     }
 
