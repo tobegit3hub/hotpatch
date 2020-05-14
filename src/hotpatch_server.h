@@ -7,9 +7,10 @@
 
 #include "hotpatch_command.h"
 
+using namespace std;
+
 namespace hotpatch {
 
-typedef void (*void_function_type)();
 
 class HotpatchServer {
 
@@ -40,6 +41,7 @@ public:
     void SetShouldStop(bool stop);
 
     std::shared_ptr<HotpatchCommand> GetHotpathCommand();
+
 
 };
 

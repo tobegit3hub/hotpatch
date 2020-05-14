@@ -56,7 +56,7 @@ void start_socket_server(HotpatchServer* p_hotpatch_server) {
     size = offsetof(struct sockaddr_un, sun_path) + strlen(serun.sun_path);
     unlink(socket_path.c_str());
 
-    if (bind(listenfd, (struct sockaddr *)&serun, size) < 0) {
+    if (::bind(listenfd, (struct sockaddr *)&serun, size) < 0) {
         perror("bind error");
         exit(1);
     }

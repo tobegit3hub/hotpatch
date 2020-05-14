@@ -6,8 +6,8 @@
 #include <dlfcn.h>
 #include <memory>
 #include <cassert>
+
 #include "hotpatch_server.h"
-#include<cstdlib>
 
 using namespace std;
 
@@ -27,7 +27,7 @@ typename std::result_of<Fn(Args...)>::type wrapper(Args&&... args) {
     return fn(std::forward<Args>(args)...);
 }
 
-#define WRAPPER(FUNC) wrapper<decltype(&FUNC), &FUNC>
+//#define WRAPPER(FUNC) wrapper<decltype(&FUNC), &FUNC>
 
 
 // Use gflags
@@ -72,8 +72,8 @@ int main(int argc, char **argv) {
 
         //p_add_func(1, 2);
 
-        auto result = WRAPPER(add_func)(10, 20);
-        //auto result = wrapper<decltype(&add_func), &add_func>(add_func)(10, 20);
+        //auto result = WRAPPER(add_func)(10, 20);
+        auto result = wrapper<decltype(&add_func), &add_func>(10, 20);
         cout << "Wrapper function result: " << result << endl;
 
 
