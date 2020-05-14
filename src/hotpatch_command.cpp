@@ -8,7 +8,6 @@
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 
-
 #include "hotpatch_command.h"
 
 using namespace std;
@@ -71,7 +70,7 @@ bool HotpatchCommand::HandleCommand(std::vector<std::string> command) {
         }
     } else if (type.compare("func") == 0) { 
         if (method.compare("load") == 0) {
-            return HandleFuncLoad(command[2], command[3]);
+            return HandleFuncUpgrade(command[2], command[3]);
         }
     } 
 
@@ -187,7 +186,8 @@ bool HotpatchCommand::HandleLibUnload(string name) {
     return true;
 }
 
-bool HotpatchCommand::HandleFuncLoad(string lib, string name) {
+bool HotpatchCommand::HandleFuncUpgrade(string lib, string name) {
+
     return false;
 }
 

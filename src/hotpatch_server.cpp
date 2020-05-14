@@ -30,7 +30,8 @@ HotpatchServer::HotpatchServer() {
 }
 
 HotpatchServer::~HotpatchServer() {
-
+    // Release resources
+    Close();
 }
 
 void start_socket_server(HotpatchServer* p_hotpatch_server) {
@@ -112,25 +113,17 @@ void HotpatchServer::Init() {
 
     socket_server_thread = std::thread(&start_socket_server, this);
 
-    /*
-    const std::string lib_name = "../examples/libadd_func_patch1.dylib";
-
-    dl_handler = dlopen(lib_name.c_str(), RTLD_LAZY);
-    if (!dl_handler) {
-        std::cerr << "Cannot open library: " << dlerror() << '\n';
-    }
-    */
-
 }
 
 void HotpatchServer::Close() {
 
-    // TODO: Close the opened dynamic libraries handlers
-    /*
-    if (dl_handler != NULL) {
-        dlclose(dl_handler);
+    // Close the opened dynamic libraries handlers
+    for(std::map<std::string, void*>::iterator it = registered_dl_handlers.begin(); it != registered_dl_handlers.end(); ++it) {
+        LOG(INFO) << "Close dynamic library: " << it->first;
+        if (it->second != NULL) {
+            dlclose(it->second);
+        }
     }
-    */
 
     SetShouldStop(true);
 

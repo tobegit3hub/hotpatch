@@ -33,7 +33,7 @@ public:
     bool HandleLibList();
     bool HandleLibLoad(string name, string path);
     bool HandleLibUnload(string name);
-    bool HandleFuncLoad(string lib, string name);
+    bool HandleFuncUpgrade(string lib, string name);
 
 };
 
