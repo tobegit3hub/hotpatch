@@ -14,8 +14,7 @@ using google::INFO;
 namespace hotpatch {
 
 
-HotpatchCommand::HotpatchCommand() {
-
+HotpatchCommand::HotpatchCommand(std::map<std::string, void*> &registered_variables, std::map<std::string, void*> &registered_libraries): _registered_variables(registered_variables), _registered_libraries(registered_libraries) {
 
 }
 
@@ -55,9 +54,9 @@ bool HotpatchCommand::HandleCommand(std::vector<std::string> command) {
         if (method.compare("list") == 0) {
             return HandleVarList();
         } else if (method.compare("set") == 0) {
-            return HandleVarSet(command[2], command[3]);
+            return HandleVarSet(command[2], command[3], command[4]);
         } else if (method.compare("get") == 0) {
-            return HandleVarGet(command[2]);
+            return HandleVarGet(command[2], command[3]);
         }
     } else if (type.compare("lib") == 0) {
         if (method.compare("list") == 0) {
@@ -101,7 +100,7 @@ bool HotpatchCommand::HandleGflagsGet(string key) {
 }
 
 bool HotpatchCommand::HandleGflagsSet(string key, string value) {
-    LOG(INFO) << "Try to set gflags with key: " << key;
+    LOG(INFO) << "Try to set gflags with key: " << key << ", value: " << value;
 
     auto result = gflags::SetCommandLineOption(key.c_str(), value.c_str());
     LOG(INFO) << "Set gflags result: " << result;
@@ -110,15 +109,37 @@ bool HotpatchCommand::HandleGflagsSet(string key, string value) {
 }
 
 bool HotpatchCommand::HandleVarList() {
-    return false;
+    LOG(INFO) << "Try to list all variables";
+
+    for(std::map<std::string, void*>::iterator it = _registered_variables.begin(); it != _registered_variables.end(); ++it) {
+        LOG(INFO) << "Get variable: " << it->first << ", pointer: " << it->second;
+    }
+    
+    return true;
 }
 
-bool HotpatchCommand::HandleVarGet(string key) {
-    return false;
+
+bool HotpatchCommand::HandleVarGet(string type, string key) {
+    LOG(INFO) << "Try to get variable: " << key << ", type: "<< type;
+
+
+    // TODO: Support most primitive types
+    if (type.compare("string") == 0) {
+        LOG(INFO) << *reinterpret_cast<std::string*>(_registered_variables[key]);
+    } else if (type.compare("double") == 0) {
+        //LOG(INFO) << *reinterpret_cast<std::double*>(_registered_variables[key]);
+    } else if (type.compare("int") == 0) {
+        //LOG(INFO) << *reinterpret_cast<std::int*>(_registered_variables[key]);
+    } 
+
+    return true;
 }
 
-bool HotpatchCommand::HandleVarSet(string key, string value) {
-    return false;
+bool HotpatchCommand::HandleVarSet(string type, string key, string value) {
+
+
+
+    return true;
 }
 
 bool HotpatchCommand::HandleLibList() {

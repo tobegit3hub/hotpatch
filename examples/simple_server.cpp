@@ -56,8 +56,15 @@ int main(int argc, char **argv) {
 
     // TODO: Provide static method to register variables
     // Register variable
-    string user_name = "myname";
-    hp->RegisterVariable("user_name", &user_name);
+    
+    std::string user_name = "myname";
+    hp->RegisterVariable("user_name", &user_name);    
+    
+    int age = 10;
+    hp->RegisterVariable("age", &age);
+
+    hp->RegisterVariable("hotpatch_smart_pointer", &hp);
+
 
    //auto p_add_func = (decltype(add_func)*) hp->RegisterFunction("add_func", reinterpret_cast<void*>(add_func));
 

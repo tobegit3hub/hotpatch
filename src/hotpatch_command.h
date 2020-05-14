@@ -2,6 +2,7 @@
 #define _H_HOTPATCH_COMMAND
 
 #include <string>
+#include <map>
 
 using namespace std;
 
@@ -10,9 +11,12 @@ namespace hotpatch {
 class HotpatchCommand {
 
 private:
+    std::map<std::string, void*> &_registered_variables;
+    std::map<std::string, void*> &_registered_libraries;
+
 public:
 
-    HotpatchCommand();
+    HotpatchCommand(std::map<std::string, void*>& registered_variables, std::map<std::string, void*>& registered_libraries);
     ~HotpatchCommand();
 
     void ParseCommand(std::string command);
@@ -23,8 +27,8 @@ public:
     bool HandleGflagsGet(string key);
     bool HandleGflagsSet(string key, string value);
     bool HandleVarList();
-    bool HandleVarGet(string key);
-    bool HandleVarSet(string key, string value);
+    bool HandleVarGet(string type, string key);
+    bool HandleVarSet(string type, string key, string value);
     bool HandleLibList();
     bool HandleLibLoad(string name, string path);
     bool HandleFuncList();

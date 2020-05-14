@@ -17,13 +17,16 @@
 #include <dlfcn.h>
 #include <memory>
 #include <cassert>
+#include <glog/logging.h>
 
 #include "hotpatch_server.h"
+
+using google::INFO;
 
 namespace hotpatch {
 
 HotpatchServer::HotpatchServer() {
-    p_command = std::make_shared<HotpatchCommand>();
+    hotpatch_command = std::make_shared<HotpatchCommand>(registered_variables, registered_libraries);
 }
 
 HotpatchServer::~HotpatchServer() {
@@ -126,7 +129,6 @@ void HotpatchServer::Close() {
 
     SetShouldStop(true);
 
-
     socket_server_thread.detach();
     //socket_server_thread.join();
 
@@ -135,11 +137,7 @@ void HotpatchServer::Close() {
 void HotpatchServer::RegisterVariable(std::string key, void *p_value) {
     // TODO: Make share to release smart pointers
     registered_variables[key] = p_value;
-
-    // TODO: Test to set registered variable
-    registered_variables["user_name"] = new std::string("new_name");
 }
-
 
 void* HotpatchServer::RegisterFunction(std::string func_name, void* p_function) {
     return p_function;
@@ -165,7 +163,7 @@ void HotpatchServer::SetShouldStop(bool stop) {
 }
 
 std::shared_ptr<HotpatchCommand> HotpatchServer::GetHotpathCommand() {
-    return p_command;
+    return hotpatch_command;
 }
 
 } // End of namespace
