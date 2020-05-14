@@ -7,4 +7,4 @@ include_directories(
 )
 
 add_executable(benchmark_hotpatch benchmark_hotpatch.cpp)
-target_link_libraries(benchmark_hotpatch hotpatch)
+target_link_libraries(benchmark_hotpatch hotpatch_server)

@@ -5,6 +5,8 @@
 #include <string>
 #include <thread>
 
+#include "hotpatch_command.h"
+
 namespace hotpatch {
 
 typedef void (*void_function_type)();
@@ -18,6 +20,7 @@ private:
 
     // TODO: Support multiple handlers for more libraries
     void* dl_handler;
+    std::shared_ptr<HotpatchCommand> p_command;
 
 public:
     HotpatchServer();
@@ -35,6 +38,8 @@ public:
     bool GetShouldStop();
 
     void SetShouldStop(bool stop);
+
+    std::shared_ptr<HotpatchCommand> GetHotpathCommand();
 
 };
 

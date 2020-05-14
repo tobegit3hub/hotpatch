@@ -23,7 +23,7 @@
 namespace hotpatch {
 
 HotpatchServer::HotpatchServer() {
-
+    p_command = std::make_shared<HotpatchCommand>();
 }
 
 HotpatchServer::~HotpatchServer() {
@@ -93,6 +93,8 @@ void start_socket_server(HotpatchServer* p_hotpatch_server) {
             // Handle command
             std::cout << "Receive command: " + std::string(read_buf) << std::endl;
  
+            p_hotpatch_server->GetHotpathCommand()->ParseCommand(std::string(read_buf));
+
             // TODO: Parse user command to set key-value
             auto result = gflags::SetCommandLineOption("log_level", "test_log_level");
             std::cout << "Set gflags result: " << result << std::endl;
@@ -168,6 +170,10 @@ bool HotpatchServer::GetShouldStop() {
 
 void HotpatchServer::SetShouldStop(bool stop) {
     should_stop = stop;
+}
+
+std::shared_ptr<HotpatchCommand> HotpatchServer::GetHotpathCommand() {
+    return p_command;
 }
 
 } // End of namespace
