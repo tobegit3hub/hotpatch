@@ -122,7 +122,6 @@ bool HotpatchCommand::HandleVarList() {
 bool HotpatchCommand::HandleVarGet(string type, string key) {
     LOG(INFO) << "Try to get variable: " << key << ", type: "<< type;
 
-
     // TODO: Support most primitive types
     if (type.compare("string") == 0) {
         LOG(INFO) << *reinterpret_cast<std::string*>(_registered_variables[key]);
@@ -137,7 +136,14 @@ bool HotpatchCommand::HandleVarGet(string type, string key) {
 
 bool HotpatchCommand::HandleVarSet(string type, string key, string value) {
 
+    if (type.compare("string") == 0) {
+        std::string &v = *reinterpret_cast<std::string*>(_registered_variables[key]);
+        v = value;
+    } else if (type.compare("double") == 0) {
 
+    } else if (type.compare("int") == 0) {
+
+    } 
 
     return true;
 }
