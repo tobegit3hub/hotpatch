@@ -2,11 +2,14 @@
 #include <vector>
 #include <sstream>
 #include <string>
+#include <gflags/gflags.h>
+#include <glog/logging.h>
 
 
 #include "hotpatch_command.h"
 
 using namespace std;
+using google::INFO;
 
 namespace hotpatch {
 
@@ -30,10 +33,6 @@ void HotpatchCommand::ParseCommand(std::string command) {
     std::istringstream iss(command);
     for(std::string s; iss >> s; ) {
         split_keys.push_back(s);
-    }
-
-    for (string s: split_keys) {
-        cout << "Get key: " << s << endl;
     }
 
     // TODO: Check command format
@@ -79,15 +78,36 @@ bool HotpatchCommand::HandleCommand(std::vector<std::string> command) {
 }
 
 bool HotpatchCommand::HandleGflagsList() {
-    return false;
+    LOG(INFO) << "Try to list all gflags";
+
+    std::vector<gflags::CommandLineFlagInfo> flags;
+    gflags::GetAllFlags(&flags);
+    std::vector<gflags::CommandLineFlagInfo>::iterator i;
+    for (i = flags.begin(); i != flags.end(); ++i) {
+        LOG(INFO) << "Flag name: " << i->name << ", value: " << i->current_value;
+    }            
+
+    return true;
 }
 
 bool HotpatchCommand::HandleGflagsGet(string key) {
-    return false;
+    LOG(INFO) << "Try to get gflags with key: " << key;
+
+    gflags::CommandLineFlagInfo flag;
+    auto result = gflags::GetCommandLineFlagInfo(key.c_str(), &flag);
+
+    LOG(INFO) << "Flag name: " << flag.name << ", value: " << flag.current_value;
+
+    return result;
 }
 
 bool HotpatchCommand::HandleGflagsSet(string key, string value) {
-    return false;
+    LOG(INFO) << "Try to set gflags with key: " << key;
+
+    auto result = gflags::SetCommandLineOption(key.c_str(), value.c_str());
+    LOG(INFO) << "Set gflags result: " << result;
+
+    return true;
 }
 
 bool HotpatchCommand::HandleVarList() {

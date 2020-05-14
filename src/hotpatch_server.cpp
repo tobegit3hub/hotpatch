@@ -95,14 +95,6 @@ void start_socket_server(HotpatchServer* p_hotpatch_server) {
  
             p_hotpatch_server->GetHotpathCommand()->ParseCommand(std::string(read_buf));
 
-            // TODO: Parse user command to set key-value
-            auto result = gflags::SetCommandLineOption("log_level", "test_log_level");
-            std::cout << "Set gflags result: " << result << std::endl;
-
-            result = gflags::SetCommandLineOption("minloglevel", "0");
-            std::cout << "Set gflags result: " << result << std::endl;
-            // TODO: Get registered variables to set
-
             // Output result
             std::string sendResult = "Success to run";
             std::cout << sendResult << std::endl;

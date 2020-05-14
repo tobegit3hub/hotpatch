@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
     FLAGS_logtostderr = 1;
     google::InitGoogleLogging(argv[0]); 
 
-    FLAGS_minloglevel = 2;
+    FLAGS_minloglevel = 0;
 
     auto hp = make_shared<hotpatch::HotpatchServer>();
     hp->Init();
