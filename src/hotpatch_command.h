@@ -13,10 +13,11 @@ class HotpatchCommand {
 private:
     std::map<std::string, void*> &_registered_variables;
     std::map<std::string, void*> &_registered_libraries;
+    std::map<std::string, void*> &_registered_dl_handlers;
 
 public:
 
-    HotpatchCommand(std::map<std::string, void*>& registered_variables, std::map<std::string, void*>& registered_libraries);
+    HotpatchCommand(std::map<std::string, void*>& registered_variables, std::map<std::string, void*>& registered_libraries, std::map<std::string, void*>& registered_dl_handlers);
     ~HotpatchCommand();
 
     void ParseCommand(std::string command);
@@ -31,7 +32,6 @@ public:
     bool HandleVarSet(string type, string key, string value);
     bool HandleLibList();
     bool HandleLibLoad(string name, string path);
-    bool HandleFuncList();
     bool HandleFuncLoad(string lib, string name);
 
 };

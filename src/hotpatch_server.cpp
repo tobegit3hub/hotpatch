@@ -26,7 +26,7 @@ using google::INFO;
 namespace hotpatch {
 
 HotpatchServer::HotpatchServer() {
-    hotpatch_command = std::make_shared<HotpatchCommand>(registered_variables, registered_libraries);
+    hotpatch_command = std::make_shared<HotpatchCommand>(registered_variables, registered_libraries, registered_dl_handlers);
 }
 
 HotpatchServer::~HotpatchServer() {
@@ -112,20 +112,25 @@ void HotpatchServer::Init() {
 
     socket_server_thread = std::thread(&start_socket_server, this);
 
+    /*
     const std::string lib_name = "../examples/libadd_func_patch1.dylib";
 
     dl_handler = dlopen(lib_name.c_str(), RTLD_LAZY);
     if (!dl_handler) {
         std::cerr << "Cannot open library: " << dlerror() << '\n';
     }
+    */
 
 }
 
 void HotpatchServer::Close() {
 
+    // TODO: Close the opened dynamic libraries handlers
+    /*
     if (dl_handler != NULL) {
         dlclose(dl_handler);
     }
+    */
 
     SetShouldStop(true);
 

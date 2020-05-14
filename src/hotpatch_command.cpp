@@ -2,6 +2,9 @@
 #include <vector>
 #include <sstream>
 #include <string>
+#include <dlfcn.h>
+#include <memory>
+#include <cassert>
 #include <gflags/gflags.h>
 #include <glog/logging.h>
 
@@ -14,7 +17,7 @@ using google::INFO;
 namespace hotpatch {
 
 
-HotpatchCommand::HotpatchCommand(std::map<std::string, void*> &registered_variables, std::map<std::string, void*> &registered_libraries): _registered_variables(registered_variables), _registered_libraries(registered_libraries) {
+HotpatchCommand::HotpatchCommand(std::map<std::string, void*> &registered_variables, std::map<std::string, void*> &registered_libraries, std::map<std::string, void*> &registered_dl_handlers): _registered_variables(registered_variables), _registered_libraries(registered_libraries), _registered_dl_handlers(registered_dl_handlers) {
 
 }
 
@@ -65,9 +68,7 @@ bool HotpatchCommand::HandleCommand(std::vector<std::string> command) {
             return HandleLibLoad(command[2], command[3]);
         }
     } else if (type.compare("func") == 0) { 
-        if (method.compare("list") == 0) {
-            return HandleFuncList();
-        } else if (method.compare("load") == 0) {
+        if (method.compare("load") == 0) {
             return HandleFuncLoad(command[2], command[3]);
         }
     } 
@@ -151,15 +152,25 @@ bool HotpatchCommand::HandleVarSet(string type, string key, string value) {
 }
 
 bool HotpatchCommand::HandleLibList() {
-    return false;
+    LOG(INFO) << "Try to list all dynamic libraries";
+
+    for(std::map<std::string, void*>::iterator it = _registered_dl_handlers.begin(); it != _registered_dl_handlers.end(); ++it) {
+        LOG(INFO) << "Get library: " << it->first << ", pointer: " << it->second;
+    }
+
+    return true;
 }
 
 bool HotpatchCommand::HandleLibLoad(string name, string path) {
-    return false;
-}
+    LOG(INFO) << "Try to loaddynamic library: " << name << ", path: " << path;
 
-bool HotpatchCommand::HandleFuncList() {
-    return false;
+    _registered_dl_handlers[name] = dlopen(path.c_str(), RTLD_LAZY);
+    if (!_registered_dl_handlers[name] ) {
+        std::cerr << "Cannot open library: " << dlerror() << '\n';
+        return false;
+    }
+
+    return true;
 }
 
 bool HotpatchCommand::HandleFuncLoad(string lib, string name) {

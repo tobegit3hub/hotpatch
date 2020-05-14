@@ -20,6 +20,7 @@ private:
 
     std::map<std::string, void*> registered_variables;
     std::map<std::string, void*> registered_libraries;
+    std::map<std::string, void*> registered_dl_handlers;
 
     // TODO: Support multiple handlers for more libraries
     void* dl_handler;
