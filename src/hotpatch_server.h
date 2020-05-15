@@ -15,6 +15,7 @@ namespace hotpatch {
 extern void InitGlobalHotpatchServer();
 extern void ShutdownGlobalHotpatchServer();
 extern void RegisterVariable(std::string key, void *p_value);
+extern void RegisterFunction(std::string name, void *p_func);
 
 
 class HotpatchServer {

@@ -25,7 +25,7 @@ using google::INFO;
 
 namespace hotpatch {
 
-
+// The global object
 HotpatchServer* global_hotpatch_server_ = NULL;
 
 HotpatchServer* GetGlobalHotpatchServer() {
@@ -51,6 +51,12 @@ void RegisterVariable(std::string key, void *p_value) {
 }
 
 
+void RegisterFunction(std::string name, void* p_func) {
+
+
+}
+
+// Constructor
 HotpatchServer::HotpatchServer() {
     hotpatch_command = std::make_shared<HotpatchCommand>(registered_variables, registered_libraries, registered_dl_handlers);
 }

@@ -34,6 +34,7 @@ public:
     bool HandleLibLoad(string name, string path);
     bool HandleLibUnload(string name);
     bool HandleFuncUpgrade(string lib, string name);
+    bool HandleFuncRollback(string name);
 
 };
 

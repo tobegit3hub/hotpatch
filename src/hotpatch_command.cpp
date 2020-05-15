@@ -71,6 +71,8 @@ bool HotpatchCommand::HandleCommand(std::vector<std::string> command) {
     } else if (type.compare("func") == 0) { 
         if (method.compare("load") == 0) {
             return HandleFuncUpgrade(command[2], command[3]);
+        } else if (method.compare("rollback") == 0) {
+            return HandleFuncRollback(command[2]);
         }
     } 
 
@@ -195,7 +197,10 @@ bool HotpatchCommand::HandleFuncUpgrade(string lib, string name) {
     return false;
 }
 
+bool HotpatchCommand::HandleFuncRollback(string name) {
 
+    return false;
+}
 
 
 } // End of namespace
