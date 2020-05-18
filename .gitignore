@@ -3,6 +3,10 @@
 *.code-workspace
 .idea/
 
+# Thirdparty
+thirdparty/lib/
+thirdparty/include/
+
 # CMake
 build/
 
