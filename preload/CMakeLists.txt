@@ -1,0 +1,9 @@
+
+include_directories(
+    ${INCLUDE_DIRECTORIES}
+    ${PROJECT_SOURCE_DIR}/src
+    ${PROJECT_BINARY_DIR}/src
+)
+
+add_library(preload_hotpatch SHARED preload_hotpatch.cpp)
+target_link_libraries(preload_hotpatch hotpatch_server)

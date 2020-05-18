@@ -15,6 +15,6 @@ include_directories(${GTEST_INCLUDE_DIRS})
 add_subdirectory("src")
 add_subdirectory("examples")
 add_subdirectory("benchmark")
-
+add_subdirectory("preload")
 
 enable_testing()
