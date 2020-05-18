@@ -16,7 +16,7 @@ using google::INFO;
 namespace hotpatch {
 
 
-HotpatchCommand::HotpatchCommand(std::map<std::string, void*> &registered_variables, std::map<std::string, void*> &registered_libraries, std::map<std::string, void*> &registered_dl_handlers): _registered_variables(registered_variables), _registered_libraries(registered_libraries), _registered_dl_handlers(registered_dl_handlers) {
+HotpatchCommand::HotpatchCommand(std::map<std::string, void*> &registered_variables, std::map<std::string, void*> &registered_libraries, std::map<std::string, void*> &registered_dl_handlers, std::map<std::string, void*> &registered_functions): _registered_variables(registered_variables), _registered_libraries(registered_libraries), _registered_dl_handlers(registered_dl_handlers), _registered_functions(registered_functions) {
 
 }
 
@@ -69,7 +69,7 @@ bool HotpatchCommand::HandleCommand(std::vector<std::string> command) {
             return HandleLibUnload(command[2]);
         }
     } else if (type.compare("func") == 0) { 
-        if (method.compare("load") == 0) {
+        if (method.compare("upgrade") == 0) {
             return HandleFuncUpgrade(command[2], command[3]);
         } else if (method.compare("rollback") == 0) {
             return HandleFuncRollback(command[2]);
@@ -192,9 +192,25 @@ bool HotpatchCommand::HandleLibUnload(string name) {
     return true;
 }
 
-bool HotpatchCommand::HandleFuncUpgrade(string lib, string name) {
 
-    return false;
+bool HotpatchCommand::HandleFuncUpgrade(string lib_name, string func_name) {
+    LOG(INFO) << "Try to upgrade function from dynamic library: " << lib_name << ", function name: " << func_name;
+
+    if (_registered_libraries.find(lib_name) == _registered_libraries.end() ) {
+        auto dl_handler = _registered_dl_handlers[lib_name];
+
+        // TODO: Handle if method name is different from registered name
+        auto origin_func = _registered_functions[func_name];
+
+        auto load_func = dlsym(dl_handler, func_name.c_str());
+
+         auto func_hook = subhook_new((void *)origin_func, (void *)load_func, SUBHOOK_64BIT_OFFSET);
+
+          subhook_install(func_hook);
+
+    }
+
+    return true;
 }
 
 bool HotpatchCommand::HandleFuncRollback(string name) {

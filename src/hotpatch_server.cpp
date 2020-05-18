@@ -52,13 +52,13 @@ void RegisterVariable(std::string key, void *p_value) {
 
 
 void RegisterFunction(std::string name, void* p_func) {
-
-
+    auto hp = GetGlobalHotpatchServer();
+    hp->RegisterFunction(name, p_func);
 }
 
 // Constructor
 HotpatchServer::HotpatchServer() {
-    hotpatch_command = std::make_shared<HotpatchCommand>(registered_variables, registered_libraries, registered_dl_handlers);
+    hotpatch_command = std::make_shared<HotpatchCommand>(registered_variables, registered_libraries, registered_dl_handlers, registered_functions);
 }
 
 HotpatchServer::~HotpatchServer() {
@@ -167,19 +167,8 @@ void HotpatchServer::RegisterVariable(std::string key, void *p_value) {
     registered_variables[key] = p_value;
 }
 
-void* HotpatchServer::RegisterFunction(std::string func_name, void* p_function) {
-    return p_function;
-    //return dlsym(dl_handler, func_name.c_str());
-
-    /*
-    if (dl_handler != NULL) {
-        // TODO: Change function pointer with new implementation if needed
-        return dlsym(dl_handler, func_name.c_str());
-    } else {
-        return p_function;
-    }
-    */
-
+void HotpatchServer::RegisterFunction(std::string func_name, void* p_func) {
+    registered_functions[func_name] = p_func;
 }
 
 bool HotpatchServer::GetShouldStop() {

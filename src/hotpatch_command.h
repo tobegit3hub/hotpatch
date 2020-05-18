@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 #include <vector>
+#include <subhook.h>
 
 using namespace std;
 
@@ -16,9 +17,13 @@ private:
     std::map<std::string, void*> &_registered_libraries;
     std::map<std::string, void*> &_registered_dl_handlers;
 
+    std::map<std::string, void*> &_registered_functions;
+    std::map<std::string, subhook::Hook> _registered_subhook;
+
+
 public:
 
-    HotpatchCommand(std::map<std::string, void*>& registered_variables, std::map<std::string, void*>& registered_libraries, std::map<std::string, void*>& registered_dl_handlers);
+    HotpatchCommand(std::map<std::string, void*>& registered_variables, std::map<std::string, void*>& registered_libraries, std::map<std::string, void*>& registered_dl_handlers, std::map<std::string, void*>& registered_functions);
     ~HotpatchCommand();
 
     void ParseCommand(std::string command);
@@ -34,8 +39,8 @@ public:
     bool HandleLibList();
     bool HandleLibLoad(string name, string path);
     bool HandleLibUnload(string name);
-    bool HandleFuncUpgrade(string lib, string name);
-    bool HandleFuncRollback(string name);
+    bool HandleFuncUpgrade(string lib_name, string func_name);
+    bool HandleFuncRollback(string func_name);
 
 };
 

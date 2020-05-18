@@ -28,6 +28,10 @@ private:
     std::map<std::string, void*> registered_libraries;
     std::map<std::string, void*> registered_dl_handlers;
 
+    // Map of function name and function pointer which casts to void*
+    std::map<std::string, void*> registered_functions;
+
+
     // TODO: Support multiple handlers for more libraries
     void* dl_handler;
     std::shared_ptr<HotpatchCommand> hotpatch_command;
@@ -44,7 +48,7 @@ public:
 
     void RegisterVariable(std::string key, void *p_value);
 
-    void* RegisterFunction(std::string func_name, void* p_function);
+    void RegisterFunction(std::string func_name, void* p_func);
 
     bool GetShouldStop();
 

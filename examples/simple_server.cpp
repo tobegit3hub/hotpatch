@@ -27,8 +27,6 @@ typename std::result_of<Fn(Args...)>::type wrapper(Args&&... args) {
     return fn(std::forward<Args>(args)...);
 }
 
-typedef int(*intintint2)(int, int);
-
 // Use gflags
 DEFINE_bool(debug, true, "Use debug or not");
 DEFINE_string(log_level, "debug,info,warn", "The log level");
@@ -60,6 +58,8 @@ int main(int argc, char **argv) {
     int age = 10;
     hotpatch::RegisterVariable("age", &age);
 
+    hotpatch::RegisterFunction("add_func", reinterpret_cast<void*>(add_func));
+
     // Run serving logic
     for(int i=0; i<10; i++) {
         cout << "Sleep for one second" << endl;
@@ -73,10 +73,7 @@ int main(int argc, char **argv) {
         LOG(WARNING) << "glog warning message";
         LOG(ERROR) << "glog erro message";
 
-        //p_add_func(1, 2);
-        auto result = wrapper<decltype(&add_func), &add_func>(10, 20);
-
-        cout << "Wrapper function result: " << result << endl;
+        add_func(1, 2);
     }
 
 }
