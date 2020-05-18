@@ -7,6 +7,12 @@
 thirdparty/lib/
 thirdparty/include/
 
+# Python
+python/dist/
+python/hotpatch.egg-info/
+python/hotpatch/__pycache__/
+python/hotpatch/cli/__pycache__/
+
 # CMake
 build/
 
