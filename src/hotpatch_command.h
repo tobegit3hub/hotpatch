@@ -18,8 +18,7 @@ private:
     std::map<std::string, void*> &_registered_dl_handlers;
 
     std::map<std::string, void*> &_registered_functions;
-    std::map<std::string, subhook::Hook> _registered_subhook;
-
+    std::map<std::string, subhook_t> _registered_func_subhook;
 
 public:
 

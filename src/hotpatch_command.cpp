@@ -204,18 +204,28 @@ bool HotpatchCommand::HandleFuncUpgrade(string lib_name, string func_name) {
 
         auto load_func = dlsym(dl_handler, func_name.c_str());
 
-         auto func_hook = subhook_new((void *)origin_func, (void *)load_func, SUBHOOK_64BIT_OFFSET);
+        // TODO: Release the old one when register the one with the same name
+        subhook_t func_hook = subhook_new((void *)origin_func, (void *)load_func, SUBHOOK_64BIT_OFFSET);
 
-          subhook_install(func_hook);
+        subhook_install(func_hook);
+
+        _registered_func_subhook[func_name] = func_hook;
 
     }
 
     return true;
 }
 
-bool HotpatchCommand::HandleFuncRollback(string name) {
+bool HotpatchCommand::HandleFuncRollback(string func_name) {
+    LOG(INFO) << "Try to rollback function: " << func_name;
 
-    return false;
+    // TODO: Check if it is registered or not
+    subhook_t func_subhook = _registered_func_subhook[func_name];
+
+    subhook_remove(func_subhook);
+    subhook_free(func_subhook);
+
+    return true;
 }
 
 

@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
     hotpatch::RegisterFunction("add_func", reinterpret_cast<void*>(add_func));
 
     // Run serving logic
-    for(int i=0; i<10; i++) {
+    for(int i=0; i<100; i++) {
         cout << "Sleep for one second" << endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
