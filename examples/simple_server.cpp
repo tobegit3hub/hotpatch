@@ -11,27 +11,9 @@
 
 using namespace std;
 
-
-template<typename Fn, Fn fn, typename... Args>
-typename std::result_of<Fn(Args...)>::type wrapper(Args&&... args) {
-
-    /*
-    const std::string lib_name = "../examples/libadd_func_patch1.dylib";
-    void* dl_handler = dlopen(lib_name.c_str(), RTLD_LAZY);
-
-    std::string func_name = "add_func";
-    auto new_fun = (decltype(fn)) dlsym(dl_handler, func_name.c_str());
-
-    return new_fun(std::forward<Args>(args)...);
-    */
-    return fn(std::forward<Args>(args)...);
-}
-
-// Use gflags
 DEFINE_bool(debug, true, "Use debug or not");
 DEFINE_string(log_level, "debug,info,warn", "The log level");
 
-// Define local function
 int add_func(int a, int b) {
     cout << "Call simple add" << endl;
     int result = a + b;
@@ -49,19 +31,18 @@ int main(int argc, char **argv) {
     FLAGS_minloglevel = 0;
 
     // Use Hotpatch
-    hotpatch::InitGlobalHotpatchServer();
+    hotpatch::InitHotpatchServer();
 
     // Register variable
     std::string user_name = "myname";
     hotpatch::RegisterVariable("user_name", &user_name);
-
     int age = 10;
     hotpatch::RegisterVariable("age", &age);
 
+    // Register function
     hotpatch::RegisterFunction("add_func", reinterpret_cast<void*>(add_func));
 
-    // Run serving logic
-    for(int i=0; i<100; i++) {
+    for(int i=0; i<10; i++) {
         cout << "Sleep for one second" << endl;
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 

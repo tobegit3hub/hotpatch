@@ -28,7 +28,7 @@ namespace hotpatch {
 // The global object
 HotpatchServer* global_hotpatch_server_ = NULL;
 
-HotpatchServer* GetGlobalHotpatchServer() {
+HotpatchServer* GetHotpatchServer() {
   // TODO: Use lock to avoid conflict
   if (!global_hotpatch_server_) {
     global_hotpatch_server_ = new HotpatchServer;
@@ -36,23 +36,23 @@ HotpatchServer* GetGlobalHotpatchServer() {
   return global_hotpatch_server_;
 }
 
-void InitGlobalHotpatchServer() {
-  GetGlobalHotpatchServer()->Init();
+void InitHotpatchServer() {
+  GetHotpatchServer()->Init();
 } 
 
-void ShutdownGlobalHotpatchServer() {
+void ShutdownHotpatchServer() {
     delete global_hotpatch_server_;
     global_hotpatch_server_ = NULL;
 }
 
 void RegisterVariable(std::string key, void *p_value) {
-    auto hp = GetGlobalHotpatchServer();
+    auto hp = GetHotpatchServer();
     hp->RegisterVariable(key, p_value);
 }
 
 
 void RegisterFunction(std::string name, void* p_func) {
-    auto hp = GetGlobalHotpatchServer();
+    auto hp = GetHotpatchServer();
     hp->RegisterFunction(name, p_func);
 }
 
