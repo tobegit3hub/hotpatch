@@ -73,8 +73,6 @@ void start_socket_server(HotpatchServer* p_hotpatch_server) {
 
     // Get pid to set socket file
     pid_t pid = getpid();
-    // TODO: Set for test
-    pid = 100;
     std::string socket_path = "/tmp/" + std::to_string(pid) + ".socket";
     std::cout << "Unix socket path: " << socket_path << std::endl;
 
