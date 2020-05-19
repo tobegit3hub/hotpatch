@@ -181,9 +181,9 @@ echo "func rollback add_func" | nc -U /tmp/$PID.socket
 
 ## Performance
 
-No performance overhead wit new hot patches!
+**No performance overhead for your application!**
 
-Under the hood, `gflags` manages all the flag information globally and provide the APIs to access. For registered variables, we use the void pointer to access and only support for primitive types so far. For registered functions, we modify the underlying instructions to jump to new function adress which brings no performance degradation. Here is the underlying implementation of [subhook](https://github.com/Zeex/subhook) for x86 architecture.
+Under the hood, `gflags` manages all the flag information globally and provide the APIs to access. For registered variables, we use the void pointer to access and only support for primitive types so far. For registered functions, the underlying instructions are mofified to jump to the new function adress which brings no performance degradation. Here is the underlying implementation of [subhook](https://github.com/Zeex/subhook) for x86 architecture.
 
 ```
 static int subhook_make_jmp64(void *src, void *dst) {
