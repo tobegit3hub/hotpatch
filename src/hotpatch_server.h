@@ -11,12 +11,10 @@ using namespace std;
 
 namespace hotpatch {
 
-
 extern void InitHotpatchServer();
 extern void ShutdownHotpatchServer();
 extern void RegisterVariable(std::string key, void *p_value);
 extern void RegisterFunction(std::string name, void *p_func);
-
 
 class HotpatchServer {
 

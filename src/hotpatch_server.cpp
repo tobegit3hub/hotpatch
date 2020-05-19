@@ -144,11 +144,11 @@ void HotpatchServer::Init() {
 }
 
 void HotpatchServer::Close() {
-    LOG(INFO) << "Close the Hotpatch server";
+    cout << "Close the Hotpatch server" << endl;
 
     // Close the opened dynamic libraries handlers
     for(std::map<std::string, void*>::iterator it = registered_dl_handlers.begin(); it != registered_dl_handlers.end(); ++it) {
-        LOG(INFO) << "Close dynamic library: " << it->first;
+        cout << "Close dynamic library: " << it->first << endl;
         if (it->second != NULL) {
             dlclose(it->second);
         }

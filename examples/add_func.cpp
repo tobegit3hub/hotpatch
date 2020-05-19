@@ -11,6 +11,4 @@ extern "C" int add_func(int a, int b) {
     return result;
 }
 
-extern "C" int add_one(int a) {
-    return a+1;
-}
+
