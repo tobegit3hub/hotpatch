@@ -5,7 +5,7 @@ include_directories(
     ${PROJECT_BINARY_DIR}/src
 )
 
-add_library(add_func_patch1 SHARED add_func.cpp before_add_func.cpp after_add_func.cpp)
+add_library(add_func_patch1 SHARED add_func.cpp)
 add_library(add_one_patch1 SHARED add_one.cpp)
 
 add_executable(simple_server simple_server.cpp)
