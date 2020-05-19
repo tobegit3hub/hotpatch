@@ -69,7 +69,7 @@ hotpatch::RegisterVariable("age", &age);
 hotpatch::RegisterFunction("add_func", reinterpret_cast<void*>(add_func));
 ```
 
-Then we can get and set the values in any time while the programing is running. It is usable for debuging or changing the logic of your programs without re-compiling and restarting the processes.
+Then we can get and set the values in any time while the program is running. It is meaningful for debuging and changing the logic of your programs without re-compiling and restarting the process.
 
 ```
 hotpatch -p $PID var get string user_name
@@ -89,7 +89,7 @@ hotpatch -p $PID func upgrade add_func_patch1 add_func
 hotpatch -p $PID func rollback add_func
 ```
 
-## Client
+## Clients
 
 ### Python Client
 
@@ -178,3 +178,28 @@ echo "func upgrade add_func_patch1 add_func" | nc -U /tmp/$PID.socket
 
 echo "func rollback add_func" | nc -U /tmp/$PID.socket
 ```
+
+## Performance
+
+No performance overhead wit new hot patches!
+
+Under the hood, `gflags` manages all the flag information globally and provide the APIs to access. For registered variables, we use the void pointer to access and only support for primitive types so far. For registered functions, we modify the underlying instructions to jump to new function adress which brings no performance degradation. Here is the underlying implementation of [subhook](https://github.com/Zeex/subhook) for x86 architecture.
+
+```
+static int subhook_make_jmp64(void *src, void *dst) {
+  struct subhook_jmp64 *jmp = (struct subhook_jmp64 *)src;
+
+  jmp->push_opcode = PUSH_OPCODE;
+  jmp->push_addr = (uint32_t)(uintptr_t)dst; /* truncate */
+  jmp->mov_opcode = MOV_OPCODE;
+  jmp->mov_modrm = JMP64_MOV_MODRM;
+  jmp->mov_sib = JMP64_MOV_SIB;
+  jmp->mov_offset = JMP64_MOV_OFFSET;
+  jmp->mov_addr = (uint32_t)(((uintptr_t)dst) >> 32);
+  jmp->ret_opcode = RET_OPCODE;
+
+  return 0;
+}
+```
+
+You can get more benchmark results with the scripts in [benchmark](./benchmark/).
