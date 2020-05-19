@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="hotpatch",
-    version="0.0.1",
+    version="0.1.0",
     author="tobe",
     author_email="tobeg3oogle@gmail.com",
     url="https://github.com/tobegit3hub/hotpatch",

@@ -1,5 +1,5 @@
 
-set(HOTPATCH_HEADERS hotpatch_server.h)
+set(HOTPATCH_HEADERS hotpatch_server.h hotpatch_command.h)
 set(HOTPATCH_SOURCES hotpatch_command.cpp hotpatch_server.cpp)
 
 add_library(hotpatch_server ${HOTPATCH_SOURCES})
