@@ -136,9 +136,9 @@ void start_socket_server(HotpatchServer* p_hotpatch_server) {
             std::cout << sendResult << std::endl;
             write(connfd, sendResult.c_str(), sendResult.size());
         }
-        //close(connfd);
+        close(connfd);
     }
-    //close(listenfd);
+    close(listenfd);
 }
 
 void HotpatchServer::Init() {
@@ -146,8 +146,6 @@ void HotpatchServer::Init() {
 }
 
 void HotpatchServer::Close() {
-
-    /*
     LOG(INFO) << "Close the Hotpatch server";
 
     // Close the opened dynamic libraries handlers
@@ -162,7 +160,6 @@ void HotpatchServer::Close() {
 
     socket_server_thread.detach();
     //socket_server_thread.join();
-    */
 }
 
 void HotpatchServer::RegisterVariable(std::string key, void *p_value) {

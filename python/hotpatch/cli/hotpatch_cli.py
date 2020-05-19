@@ -6,6 +6,7 @@ import sys
 import os
 import logging
 
+"""
 parser = argparse.ArgumentParser()
 parser.add_argument("-p", "--pid", type=int, required=True, help="Pid of the running process")
 root_subparsers = parser.add_subparsers()
@@ -23,10 +24,12 @@ func_parser = root_subparsers.add_parser("func", help="Set func")
 func_parser.add_argument("method", type=str, help="Methods", choices=["upgrade", "rollback"])
 
 args = parser.parse_args()
+"""
 
 def main():
   
-  pid = args.pid
+  #pid = args.pid
+  pid = int(sys.argv[2])
   command = " ".join(sys.argv[3:])
 
   socket_file = "/tmp/{}.socket".format(pid)
