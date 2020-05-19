@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(hotpatch)
+project(hotpatch VERSION 0.1.0)
 
 add_compile_options(-std=c++14)
 
