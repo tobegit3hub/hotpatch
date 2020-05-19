@@ -125,13 +125,10 @@ void start_socket_server(HotpatchServer* p_hotpatch_server) {
             }
 
             // Handle command
-            std::cout << "Receive command: " + std::string(read_buf) << std::endl;
- 
             p_hotpatch_server->GetHotpathCommand()->ParseCommand(std::string(read_buf));
 
             // Output result
             std::string sendResult = "Success to run";
-            std::cout << sendResult << std::endl;
             write(connfd, sendResult.c_str(), sendResult.size());
         }
         close(connfd);

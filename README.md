@@ -35,7 +35,7 @@ make install
 
 ## Quickstart
 
-We can run the pre-built binary with the preload library to change the properties at any time.
+We can run any pre-built binary with the preload library to change the properties at any time.
 
 ```
 # For Linux
@@ -183,7 +183,7 @@ echo "func rollback add_func" | nc -U /tmp/$PID.socket
 
 **No performance overhead for your application!**
 
-Under the hood, `gflags` manages all the flag information globally and provide the APIs to access. For registered variables, we use the void pointer to access and only support for primitive types so far. For registered functions, the underlying instructions are mofified to jump to the new function adress which brings no performance degradation. Here is the underlying implementation of [subhook](https://github.com/Zeex/subhook) for x86 architecture.
+Under the hood, `gflags` manages all the flag information globally and provide the APIs to access. For registered variables, we use the void pointer to access and only support for primitive types so far. For registered functions, the underlying instructions are mofified to jump to the new function address which brings no performance degradation. Here is the underlying implementation of [subhook](https://github.com/Zeex/subhook) for x86 architecture.
 
 ```
 static int subhook_make_jmp64(void *src, void *dst) {
