@@ -11,12 +11,10 @@ This project helps to patch and upgrade your programs with the following feature
 - [x] Set and print any registered variables on the fly.
 - [x] Load and unload the dynamic libraries on the fly.
 - [x] Upgrade and rollback the implementation of registered functions on the fly.
-- [x] Full support for Linux, MacOS and Windows.
-
 
 ## Installation
 
-Build the project from scratch.
+Build the project from scratch. Required to install `gflags`, `glogs`, `gtest` and `subhook` in advance.
 
 ```
 mkdir ./build/
