@@ -6,12 +6,12 @@ Computer progroms are like humans in a way which is extensible to do almost ever
 
 This project helps to patch and upgrade your programs with the following features.
 
-[*] Set and get the [gflags](https://github.com/gflags/gflags) on the fly.
-[*] Set the logging properties of [glogs](https://github.com/google/glog) on the fly.
-[*] Set and print any registered variables on the fly.
-[*] Load and unload the dynamic libraries on the fly.
-[*] Upgrade and rollback the implementation of registered functions on the fly.
-[*] Full support for Linux, MacOS and Windows.
+- [x] Set and get the [gflags](https://github.com/gflags/gflags) on the fly.
+- [x] Set the logging properties of [glogs](https://github.com/google/glog) on the fly.
+- [x] Set and print any registered variables on the fly.
+- [x] Load and unload the dynamic libraries on the fly.
+- [x] Upgrade and rollback the implementation of registered functions on the fly.
+- [x] Full support for Linux, MacOS and Windows.
 
 
 ## Installation
