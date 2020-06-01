@@ -201,3 +201,7 @@ static int subhook_make_jmp64(void *src, void *dst) {
 ```
 
 You can get more benchmark results with the scripts in [benchmark](./benchmark/).
+
+## Notice
+
+For MacOS Catalina users, you need to set `printf '\x07' | dd of=<executable> bs=1 seek=160 count=1 conv=notrunc` because of the [security issue](https://stackoverflow.com/questions/60654834/using-mprotect-to-make-text-segment-writable-on-macos).
