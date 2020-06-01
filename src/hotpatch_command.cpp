@@ -197,14 +197,30 @@ bool HotpatchCommand::HandleFuncUpgrade(string lib_name, string func_name) {
 
     if (_registered_libraries.find(lib_name) == _registered_libraries.end() ) {
         auto dl_handler = _registered_dl_handlers[lib_name];
+        if (dl_handler == NULL) {
+            std::cerr << "dl_handler is null\n";
+            return false;
+        }
 
         // TODO: Handle if method name is different from registered name
         auto origin_func = _registered_functions[func_name];
+        if (origin_func == NULL) {
+            std::cerr << "origin_func is null\n";
+            return false;
+        }
 
         auto load_func = dlsym(dl_handler, func_name.c_str());
+        if (load_func == NULL) {
+            std::cerr << "load_func is null\n";
+            return false;
+        }
 
         // TODO: Release the old one when register the one with the same name
         subhook_t func_hook = subhook_new((void *)origin_func, (void *)load_func, SUBHOOK_64BIT_OFFSET);
+        if (func_hook == NULL) {
+            std::cerr << "func_hook is null\n";
+            return false;
+        }
 
         subhook_install(func_hook);
 

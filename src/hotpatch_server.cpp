@@ -103,7 +103,6 @@ void start_socket_server(HotpatchServer* p_hotpatch_server) {
 
     struct sockaddr_un cliun;
     socklen_t cliun_len = sizeof(cliun);
-    char read_buf[buffer_size], write_buf[buffer_size];
     int connfd;
     while(p_hotpatch_server->GetShouldStop() == false) {
         // TODO: Use async API to close the socket
@@ -112,9 +111,10 @@ void start_socket_server(HotpatchServer* p_hotpatch_server) {
             perror("accept error");
             continue;
         }
-        
+
         // TODO: Pass the flag to stop waiting clients
         while(1) {
+            char read_buf[buffer_size];
             int readSize = read(connfd, read_buf, sizeof(read_buf));
             if (readSize < 0) {
                 perror("read error");
@@ -124,8 +124,12 @@ void start_socket_server(HotpatchServer* p_hotpatch_server) {
                 break;
             }
 
+            // TODO: Create new buffer to load actual command
+            char new_read_buf[readSize];
+            memcpy(new_read_buf, read_buf, readSize);
+
             // Handle command
-            p_hotpatch_server->GetHotpathCommand()->ParseCommand(std::string(read_buf));
+            p_hotpatch_server->GetHotpathCommand()->ParseCommand(std::string(new_read_buf));
 
             // Output result
             std::string sendResult = "Success to run";
